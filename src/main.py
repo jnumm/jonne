@@ -166,10 +166,10 @@ tekijat = "Tuomas Numminen & Juhani Numminen"
 xliike = nopeus
 yliike = nopeus
 
-alku_kuva = pygame.image.load("../gfx/alku.png")
-alku_kuva2 = pygame.image.load("../gfx/alku2.png")
+alku_kuva = pygame.image.load("../gfx/start.png")
+alku_kuva2 = pygame.image.load("../gfx/start2.png")
 
-laatikko1 = pygame.image.load("../gfx/toxin.png")
+laatikko1 = pygame.image.load("../gfx/poison.png")
 
 laatikko = [3,300,600]
 
@@ -184,12 +184,12 @@ tiedosto.close()
 menu = []
 menu.append((alku_kuva, alku_kuva2))
 
-tausta2 = pygame.image.load("../gfx/test13.png")
-tausta = pygame.image.load("../gfx/test12.png")
+tausta2 = pygame.image.load("../gfx/ground.png")
+tausta = pygame.image.load("../gfx/clouds.png")
 tausta_sijainti = 0
 tausta_sijainti2 = 0
 
-ukko = pygame.image.load("../gfx/face2.png")
+ukko = pygame.image.load("../gfx/guy.png")
 
 hiiri = [0,0]
 
