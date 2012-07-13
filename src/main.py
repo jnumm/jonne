@@ -70,11 +70,11 @@ def piirraPeli(piirtoikkuna, pelihahmo, sijainti, tausta, tausta_sijainti, elama
     
     piirtoikkuna.blit(tausta2, (tausta_sijainti2,200))
     piirtoikkuna.blit(tausta2, (tausta_sijainti2 - tausta2.get_width(),200))
-   #Laitetaan laatikot liikkeelle 
+    # Let's move the boxes. 
     for laatikko_x in laatikko:
         piirtoikkuna.blit(laatikko1, (laatikko_x,350))
         
-    #Päivitä FPS otsikkopalkkiin.
+    # Update Fps to the titlebar.
     pygame.display.set_caption("FPS: " + str(random.randint(60, 80)))
         
     
@@ -83,7 +83,7 @@ def piirraPeli(piirtoikkuna, pelihahmo, sijainti, tausta, tausta_sijainti, elama
     pygame.display.flip()                         
     
 def ohjaus(sijainti):    
-#sijainti[0] = 2;
+    #sijainti[0] = 2;
     #sijainti[1] = 5;
     true = True
     
@@ -98,15 +98,14 @@ def ohjaus(sijainti):
         sijainti[2]=1
 
     if sijainti[2]==1:
-        # jos hypätään, noustaan ylöspäin
+        # If we are jumping, go up.
         sijainti[1]=sijainti[1]-5
     else: 
-        # jos ei hypätä, tullaan alaspäin
-        # tähän tarvitaan tarkistus jotta ei mennä liian alas
+        # If we are not jumping, go down.
         if sijainti[1] < 155:
             sijainti[1]=sijainti[1]+5
             
-#jos ollaan liian korkealla, lopeta hyppääminen
+    # If we are too high, stop jumping.
     if sijainti[2]==1 and sijainti[1]<45:
         sijainti[2]=0
     
@@ -122,12 +121,11 @@ def ohjaus(sijainti):
         print "ny pitäs jatkuu..."
 
 def paivita_fps():
-    # Päivitä FPS otsikkopalkkiin.
+    # Update the FPS to the title bar.
     pygame.display.set_caption("Fps: " + str(random.randint(60, 80)))
     
                         # (x, y)                                         (x,y)
 def piste_hahmon_sisalla(hahmon_sijainti, hahmon_leveys, hahmon_korkeus, piste):
-    # print "tarkistetaan", hahmon_sijainti, hahmon_leveys, hahmon_korkeus, piste
     if hahmon_sijainti[0] > piste[0]:
         return False
     elif hahmon_sijainti[0] + hahmon_leveys < piste[0]:
@@ -152,7 +150,7 @@ def isku(hahmo1_sijainti, hahmo1, hahmo2_sijainti, hahmo2):
 
     return False
 
-## pelin alustus ja kuvien ym lataaminen		
+##  Load images
 naytto = pygame.display.set_mode((640, 400))
                 #  x    y  hyppaa
 hahmon_tiedot = [100, 100, 0]
@@ -172,9 +170,6 @@ alku_kuva2 = pygame.image.load("../gfx/alku2.png")
 laatikko1 = pygame.image.load("../gfx/toxin.png")
 
 laatikko = [3,300,600]
-
-#laatikko_ = random.randint(250,350)
-
 
 tiedosto = open("../huippu_piste.txt","r")
 paras_piste = int(tiedosto.readline())
@@ -197,7 +192,7 @@ kello = pygame.time.Clock()
 
 nimi = raw_input ("Your nickname: ")
 
-## peli käyntiin: menu
+## Game start: menu
 naytetaanMenu = True
 while naytetaanMenu:
     nappiaPainettu = False
@@ -222,7 +217,7 @@ koskettaako = 0
 elama = 10
 aloitus_aika = time.clock()
 
-# PELITOISTO
+# Game while
 while True:
     for tapahtuma in pygame.event.get():
         if tapahtuma.type == pygame.QUIT:
@@ -231,7 +226,7 @@ while True:
     ohjaus(hahmon_tiedot)
     #print hahmon_tiedot
     
-    # pelilogiikkaa
+    # Gamelogic
     tausta_sijainti = tausta_sijainti - 1
     tausta_sijainti2 = tausta_sijainti2 - 5
     #print "taustan sijainti", tausta_sijainti, "ja taustan leveys", tausta.get_width()
@@ -243,7 +238,7 @@ while True:
 		if laatikko[indeksi]<-200:
 			laatikko[indeksi] = 900
 	
-	# törmääkö
+	# touch
     osui = 0
     for indeksi in range(len(laatikko)):
         if isku(hahmon_tiedot, ukko, (laatikko[indeksi], 350), laatikko1):
@@ -255,9 +250,6 @@ while True:
     
     if osui == 0:
         koskettaako = 0
-	
-    #print koskettaako	
-    #paivita_fps(fps)
                #              x                 y
     sijainti = (hahmon_tiedot[0], hahmon_tiedot[1])
     piirraPeli(naytto, ukko, sijainti, tausta, tausta_sijainti, elama ,tausta2, tausta_sijainti2)
@@ -290,7 +282,7 @@ else:
     teksti2 = fontti.render("##### NO NEW RECORD #####" + "s", True, (255,0,0))
     teksti3 = fontti.render("Current record: " + str(paras_piste) + "s", True, (255,0,0))
     teksti4 = fontti.render("Made by: " + paras_nimi, True, (255,0,0))
-#LOPPUTOISTO
+#END While
 while True:
     for tapahtuma in pygame.event.get():
         if tapahtuma.type == pygame.QUIT:
