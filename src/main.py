@@ -64,7 +64,7 @@ def piirraPeli(piirtoikkuna, pelihahmo, sijainti, tausta, tausta_sijainti, elama
     piirtoikkuna.blit(tausta, (tausta_sijainti - tausta.get_width(),0))
     
     fontti = pygame.font.Font(None, 24)
-    teksti = fontti.render (u"elämät: " + str(elama), True, (255,0,0))
+    teksti = fontti.render("Health: " + str(elama), True, (255,0,0))
     naytto.blit(teksti, (0,0))
 	     
     
@@ -161,7 +161,7 @@ hahmon_tiedot = [100, 100, 0]
 
 nopeus = 10
 
-tekijat = "Tuomas Numminen, Juhani Numminen"
+tekijat = "Tuomas Numminen & Juhani Numminen"
 
 xliike = nopeus
 yliike = nopeus
@@ -195,7 +195,7 @@ hiiri = [0,0]
 
 kello = pygame.time.Clock()
 
-nimi = raw_input ("nimimerkki: ")
+nimi = raw_input ("Your nickname: ")
 
 ## peli käyntiin: menu
 naytetaanMenu = True
@@ -281,15 +281,15 @@ if mennyt_aika > paras_piste:
     tiedosto2.write (nimi)
     tiedosto2.close()
     
-    teksti = fontti.render ("Aika: " + str(mennyt_aika) + u"s          Tekijät: " + tekijat,True,(255,0,0)) 
-    teksti2 = fontti.render (u"##### UUSI ENNÄTYS #####",True,(50,255,0))
-    teksti3 = fontti.render(u"Entinen ennätys: "  + str(paras_piste) + "s", True, (255,0,0))
-    teksti4 = fontti.render(u"Ennätyksen haltija: " + paras_nimi, True, (255,0,0))  
+    teksti = fontti.render("Time: " + str(mennyt_aika) + " s      This game is made by " + tekijat, True, (255,0,0))
+    teksti2 = fontti.render("##### NEW RECORD #####",True,(50,255,0))
+    teksti3 = fontti.render("Previous record: "  + str(paras_piste) + "s", True, (255,0,0))
+    teksti4 = fontti.render("Made by: " + paras_nimi, True, (255,0,0))
 else:    
-    teksti = fontti.render("Aika: " + str(mennyt_aika) + u"s          Tekijät: " + tekijat,True,(255,0,0))
-    teksti2 = fontti.render(u"##### EI UUTTA ENNÄTYSTÄ #####" + "s", True, (255,0,0))
-    teksti3 = fontti.render(u"Nykyinen ennätys: " + str(paras_piste) + "s", True, (255,0,0))
-    teksti4 = fontti.render(u"Ennätyksen haltija: " + paras_nimi, True, (255,0,0))
+    teksti = fontti.render("Time: " + str(mennyt_aika) + " s      This game is made by " + tekijat, True, (255,0,0))
+    teksti2 = fontti.render("##### NO NEW RECORD #####" + "s", True, (255,0,0))
+    teksti3 = fontti.render("Current record: " + str(paras_piste) + "s", True, (255,0,0))
+    teksti4 = fontti.render("Made by: " + paras_nimi, True, (255,0,0))
 #LOPPUTOISTO
 while True:
     for tapahtuma in pygame.event.get():
