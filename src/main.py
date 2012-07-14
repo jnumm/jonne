@@ -171,11 +171,19 @@ laatikko1 = pygame.image.load("../gfx/toxin.png")
 
 laatikko = [3,300,600]
 
-tiedosto = open("../hiscore.txt","r")
-paras_piste = int(tiedosto.readline())
-paras_nimi = tiedosto.readline()
-tiedosto.close()
-
+try:
+    tiedosto = open("../hiscore.txt","r")
+    paras_piste = int(tiedosto.readline())
+    paras_nimi = tiedosto.readline()
+    tiedosto.close()
+except (IOError, ValueError):
+    tiedostoError = open("../hiscore.txt","w")
+    tiedostoError.write("0")
+    tiedostoError.close()
+    
+    paras_piste = 0
+    paras_nimi = ""
+    
 menu = []
 menu.append((alku_kuva, alku_kuva2))
 
