@@ -1,7 +1,7 @@
 Jonne
 ======
 Jonne is a jumping game developed in Python, using PyGame.
-Jonne is open source; it is published under the BSD 3-clause license.
+Jonne is open source; it is published under the BSD 2-clause license.
 
 History
 ========
@@ -12,3 +12,6 @@ just 'test'.
 July 2012 a new member joined to the developers of the game, Juhani
 Numminen. The authors decided then to make the project available for
 public as open source. A name had to be made up, so 'Jonne' was chosen.
+
+Initially the license of choice was the BDS 3-clause, but it was soon
+replaced by the 2-clause version.
