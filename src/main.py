@@ -56,7 +56,7 @@ def draw_menu(window, image_list, mouse_pos):
     pygame.display.flip()        
     return active_image    
 
-def piirraPeli(piirtoikkuna, pelihahmo, sijainti, tausta, tausta_sijainti, elama ,tausta2, tausta_sijainti2):
+def draw_game(piirtoikkuna, pelihahmo, sijainti, tausta, tausta_sijainti, elama ,tausta2, tausta_sijainti2):
 	
     piirtoikkuna.fill((0, 0, 0))
     
@@ -82,7 +82,7 @@ def piirraPeli(piirtoikkuna, pelihahmo, sijainti, tausta, tausta_sijainti, elama
    
     pygame.display.flip()                         
     
-def ohjaus(sijainti):    
+def control(sijainti):
     #sijainti[0] = 2;
     #sijainti[1] = 5;
     true = True
@@ -120,12 +120,12 @@ def ohjaus(sijainti):
             break 
         print "ny pitäs jatkuu..."
 
-def paivita_fps():
+def update_fps():
     # Update the FPS to the title bar.
     pygame.display.set_caption("Fps: " + str(random.randint(60, 80)))
     
                         # (x, y)                                         (x,y)
-def piste_hahmon_sisalla(hahmon_sijainti, hahmon_leveys, hahmon_korkeus, piste):
+def point_inside_character(hahmon_sijainti, hahmon_leveys, hahmon_korkeus, piste):
     if hahmon_sijainti[0] > piste[0]:
         return False
     elif hahmon_sijainti[0] + hahmon_leveys < piste[0]:
@@ -138,14 +138,14 @@ def piste_hahmon_sisalla(hahmon_sijainti, hahmon_leveys, hahmon_korkeus, piste):
 		return True
 
          # (x, y)         kuva    (x, y)          kuva      
-def isku(hahmo1_sijainti, hahmo1, hahmo2_sijainti, hahmo2):
-    if piste_hahmon_sisalla(hahmo1_sijainti, hahmo1.get_width(), hahmo1.get_height(), hahmo2_sijainti):
+def hit(hahmo1_sijainti, hahmo1, hahmo2_sijainti, hahmo2):
+    if point_inside_character(hahmo1_sijainti, hahmo1.get_width(), hahmo1.get_height(), hahmo2_sijainti):
         return True
-    if piste_hahmon_sisalla(hahmo1_sijainti, hahmo1.get_width(), hahmo1.get_height(), (hahmo2_sijainti[0], hahmo2_sijainti[1] + hahmo2.get_height())):
+    if point_inside_character(hahmo1_sijainti, hahmo1.get_width(), hahmo1.get_height(), (hahmo2_sijainti[0], hahmo2_sijainti[1] + hahmo2.get_height())):
 		return True
-    if piste_hahmon_sisalla(hahmo1_sijainti, hahmo1.get_width(), hahmo1.get_height(), (hahmo2_sijainti[0] + hahmo2.get_width(), hahmo2_sijainti[1])):
+    if point_inside_character(hahmo1_sijainti, hahmo1.get_width(), hahmo1.get_height(), (hahmo2_sijainti[0] + hahmo2.get_width(), hahmo2_sijainti[1])):
 		return True
-    if piste_hahmon_sisalla(hahmo1_sijainti, hahmo1.get_width(), hahmo1.get_height(), (hahmo2_sijainti[0] + hahmo2.get_width(), hahmo2_sijainti[1] + hahmo2.get_height())):
+    if point_inside_character(hahmo1_sijainti, hahmo1.get_width(), hahmo1.get_height(), (hahmo2_sijainti[0] + hahmo2.get_width(), hahmo2_sijainti[1] + hahmo2.get_height())):
 		return True
 
     return False
@@ -204,7 +204,7 @@ while naytetaanMenu:
         if tapahtuma.type == pygame.MOUSEBUTTONDOWN:
             nappiaPainettu = True 
     
-    paivita_fps()
+    update_fps()
     
     aktiivinenKuva = draw_menu(naytto, menu, hiiri)
     
@@ -223,7 +223,7 @@ while True:
         if tapahtuma.type == pygame.QUIT:
             exit()
 
-    ohjaus(hahmon_tiedot)
+    control(hahmon_tiedot)
     #print hahmon_tiedot
     
     # Gamelogic
@@ -241,7 +241,7 @@ while True:
 	# touch
     osui = 0
     for indeksi in range(len(laatikko)):
-        if isku(hahmon_tiedot, ukko, (laatikko[indeksi], 350), laatikko1):
+        if hit(hahmon_tiedot, ukko, (laatikko[indeksi], 350), laatikko1):
             osui = 1
 		 
     if osui == 1 and koskettaako == 0:
@@ -252,7 +252,7 @@ while True:
         koskettaako = 0
                #              x                 y
     sijainti = (hahmon_tiedot[0], hahmon_tiedot[1])
-    piirraPeli(naytto, ukko, sijainti, tausta, tausta_sijainti, elama ,tausta2, tausta_sijainti2)
+    draw_game(naytto, ukko, sijainti, tausta, tausta_sijainti, elama ,tausta2, tausta_sijainti2)
 
     kello.tick(40)
     if elama == 0:
@@ -287,7 +287,7 @@ while True:
     for tapahtuma in pygame.event.get():
         if tapahtuma.type == pygame.QUIT:
             exit()
-    paivita_fps()
+    update_fps()
     
     naytto.fill((0, 0, 0))
 
