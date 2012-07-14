@@ -54,7 +54,7 @@ def draw_menu(window, image_list, mouse_pos):
     pygame.display.flip()        
     return active_image    
 
-def piirraPeli(piirtoikkuna, pelihahmo, sijainti, tausta, tausta_sijainti, elama ,tausta2, tausta_sijainti2):
+def draw_game(piirtoikkuna, pelihahmo, sijainti, tausta, tausta_sijainti, elama ,tausta2, tausta_sijainti2):
 	
     piirtoikkuna.fill((0, 0, 0))
     
@@ -68,11 +68,11 @@ def piirraPeli(piirtoikkuna, pelihahmo, sijainti, tausta, tausta_sijainti, elama
     
     piirtoikkuna.blit(tausta2, (tausta_sijainti2,200))
     piirtoikkuna.blit(tausta2, (tausta_sijainti2 - tausta2.get_width(),200))
-   #Laitetaan laatikot liikkeelle 
+    # Let's move the boxes. 
     for laatikko_x in laatikko:
         piirtoikkuna.blit(laatikko1, (laatikko_x,350))
         
-    #Päivitä FPS otsikkopalkkiin.
+    # Update Fps to the titlebar.
     pygame.display.set_caption("FPS: " + str(random.randint(60, 80)))
         
     
@@ -80,8 +80,8 @@ def piirraPeli(piirtoikkuna, pelihahmo, sijainti, tausta, tausta_sijainti, elama
    
     pygame.display.flip()                         
     
-def ohjaus(sijainti):    
-#sijainti[0] = 2;
+def control(sijainti):
+    #sijainti[0] = 2;
     #sijainti[1] = 5;
     true = True
     
@@ -96,15 +96,14 @@ def ohjaus(sijainti):
         sijainti[2]=1
 
     if sijainti[2]==1:
-        # jos hypätään, noustaan ylöspäin
+        # If we are jumping, go up.
         sijainti[1]=sijainti[1]-5
     else: 
-        # jos ei hypätä, tullaan alaspäin
-        # tähän tarvitaan tarkistus jotta ei mennä liian alas
+        # If we are not jumping, go down.
         if sijainti[1] < 155:
             sijainti[1]=sijainti[1]+5
             
-#jos ollaan liian korkealla, lopeta hyppääminen
+    # If we are too high, stop jumping.
     if sijainti[2]==1 and sijainti[1]<45:
         sijainti[2]=0
     
@@ -119,13 +118,12 @@ def ohjaus(sijainti):
             break 
         print "ny pitäs jatkuu..."
 
-def paivita_fps():
-    # Päivitä FPS otsikkopalkkiin.
+def update_fps():
+    # Update the FPS to the title bar.
     pygame.display.set_caption("Fps: " + str(random.randint(60, 80)))
     
                         # (x, y)                                         (x,y)
-def piste_hahmon_sisalla(hahmon_sijainti, hahmon_leveys, hahmon_korkeus, piste):
-    # print "tarkistetaan", hahmon_sijainti, hahmon_leveys, hahmon_korkeus, piste
+def point_inside_character(hahmon_sijainti, hahmon_leveys, hahmon_korkeus, piste):
     if hahmon_sijainti[0] > piste[0]:
         return False
     elif hahmon_sijainti[0] + hahmon_leveys < piste[0]:
@@ -138,19 +136,19 @@ def piste_hahmon_sisalla(hahmon_sijainti, hahmon_leveys, hahmon_korkeus, piste):
 		return True
 
          # (x, y)         kuva    (x, y)          kuva      
-def isku(hahmo1_sijainti, hahmo1, hahmo2_sijainti, hahmo2):
-    if piste_hahmon_sisalla(hahmo1_sijainti, hahmo1.get_width(), hahmo1.get_height(), hahmo2_sijainti):
+def hit(hahmo1_sijainti, hahmo1, hahmo2_sijainti, hahmo2):
+    if point_inside_character(hahmo1_sijainti, hahmo1.get_width(), hahmo1.get_height(), hahmo2_sijainti):
         return True
-    if piste_hahmon_sisalla(hahmo1_sijainti, hahmo1.get_width(), hahmo1.get_height(), (hahmo2_sijainti[0], hahmo2_sijainti[1] + hahmo2.get_height())):
+    if point_inside_character(hahmo1_sijainti, hahmo1.get_width(), hahmo1.get_height(), (hahmo2_sijainti[0], hahmo2_sijainti[1] + hahmo2.get_height())):
 		return True
-    if piste_hahmon_sisalla(hahmo1_sijainti, hahmo1.get_width(), hahmo1.get_height(), (hahmo2_sijainti[0] + hahmo2.get_width(), hahmo2_sijainti[1])):
+    if point_inside_character(hahmo1_sijainti, hahmo1.get_width(), hahmo1.get_height(), (hahmo2_sijainti[0] + hahmo2.get_width(), hahmo2_sijainti[1])):
 		return True
-    if piste_hahmon_sisalla(hahmo1_sijainti, hahmo1.get_width(), hahmo1.get_height(), (hahmo2_sijainti[0] + hahmo2.get_width(), hahmo2_sijainti[1] + hahmo2.get_height())):
+    if point_inside_character(hahmo1_sijainti, hahmo1.get_width(), hahmo1.get_height(), (hahmo2_sijainti[0] + hahmo2.get_width(), hahmo2_sijainti[1] + hahmo2.get_height())):
 		return True
 
     return False
 
-## pelin alustus ja kuvien ym lataaminen		
+##  Load images
 naytto = pygame.display.set_mode((640, 400))
                 #  x    y  hyppaa
 hahmon_tiedot = [100, 100, 0]
@@ -171,10 +169,7 @@ laatikko1 = pygame.image.load("../gfx/poison.png")
 
 laatikko = [3,300,600]
 
-#laatikko_ = random.randint(250,350)
-
-
-tiedosto = open("../huippu_piste.txt","r")
+tiedosto = open("../hiscore.txt","r")
 paras_piste = int(tiedosto.readline())
 paras_nimi = tiedosto.readline()
 tiedosto.close()
@@ -195,7 +190,7 @@ kello = pygame.time.Clock()
 
 nimi = raw_input ("Your nickname: ")
 
-## peli käyntiin: menu
+## Game start: menu
 naytetaanMenu = True
 while naytetaanMenu:
     nappiaPainettu = False
@@ -207,7 +202,7 @@ while naytetaanMenu:
         if tapahtuma.type == pygame.MOUSEBUTTONDOWN:
             nappiaPainettu = True 
     
-    paivita_fps()
+    update_fps()
     
     aktiivinenKuva = draw_menu(naytto, menu, hiiri)
     
@@ -220,16 +215,16 @@ koskettaako = 0
 elama = 10
 aloitus_aika = time.clock()
 
-# PELITOISTO
+# Game while
 while True:
     for tapahtuma in pygame.event.get():
         if tapahtuma.type == pygame.QUIT:
             exit()
 
-    ohjaus(hahmon_tiedot)
+    control(hahmon_tiedot)
     #print hahmon_tiedot
     
-    # pelilogiikkaa
+    # Gamelogic
     tausta_sijainti = tausta_sijainti - 1
     tausta_sijainti2 = tausta_sijainti2 - 5
     #print "taustan sijainti", tausta_sijainti, "ja taustan leveys", tausta.get_width()
@@ -241,10 +236,10 @@ while True:
 		if laatikko[indeksi]<-200:
 			laatikko[indeksi] = 900
 	
-	# törmääkö
+	# touch
     osui = 0
     for indeksi in range(len(laatikko)):
-        if isku(hahmon_tiedot, ukko, (laatikko[indeksi], 350), laatikko1):
+        if hit(hahmon_tiedot, ukko, (laatikko[indeksi], 350), laatikko1):
             osui = 1
 		 
     if osui == 1 and koskettaako == 0:
@@ -253,12 +248,9 @@ while True:
     
     if osui == 0:
         koskettaako = 0
-	
-    #print koskettaako	
-    #paivita_fps(fps)
                #              x                 y
     sijainti = (hahmon_tiedot[0], hahmon_tiedot[1])
-    piirraPeli(naytto, ukko, sijainti, tausta, tausta_sijainti, elama ,tausta2, tausta_sijainti2)
+    draw_game(naytto, ukko, sijainti, tausta, tausta_sijainti, elama ,tausta2, tausta_sijainti2)
 
     kello.tick(40)
     if elama == 0:
@@ -274,7 +266,7 @@ mennyt_aika = int(round(time.clock() - aloitus_aika))
 fontti = pygame.font.Font(None, 24) 
 
 if mennyt_aika > paras_piste:
-    tiedosto2 = open("huippu_piste.txt", "w")
+    tiedosto2 = open("../hiscore.txt", "w")
     tiedosto2.write(str(mennyt_aika) + "\n" )
     tiedosto2.write (nimi)
     tiedosto2.close()
@@ -288,12 +280,12 @@ else:
     teksti2 = fontti.render("##### NO NEW RECORD #####" + "s", True, (255,0,0))
     teksti3 = fontti.render("Current record: " + str(paras_piste) + "s", True, (255,0,0))
     teksti4 = fontti.render("Made by: " + paras_nimi, True, (255,0,0))
-#LOPPUTOISTO
+#END While
 while True:
     for tapahtuma in pygame.event.get():
         if tapahtuma.type == pygame.QUIT:
             exit()
-    paivita_fps()
+    update_fps()
     
     naytto.fill((0, 0, 0))
 
