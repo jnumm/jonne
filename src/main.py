@@ -171,7 +171,7 @@ laatikko1 = pygame.image.load("../gfx/toxin.png")
 
 laatikko = [3,300,600]
 
-tiedosto = open("../huippu_piste.txt","r")
+tiedosto = open("../hiscore.txt","r")
 paras_piste = int(tiedosto.readline())
 paras_nimi = tiedosto.readline()
 tiedosto.close()
@@ -268,7 +268,7 @@ mennyt_aika = int(round(time.clock() - aloitus_aika))
 fontti = pygame.font.Font(None, 24) 
 
 if mennyt_aika > paras_piste:
-    tiedosto2 = open("huippu_piste.txt", "w")
+    tiedosto2 = open("../hiscore.txt", "w")
     tiedosto2.write(str(mennyt_aika) + "\n" )
     tiedosto2.write (nimi)
     tiedosto2.close()
