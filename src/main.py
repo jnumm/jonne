@@ -54,65 +54,65 @@ def draw_menu(window, image_list, mouse_pos):
     pygame.display.flip()        
     return active_image    
 
-def draw_game(piirtoikkuna, pelihahmo, sijainti, tausta, tausta_sijainti, elama ,tausta2, tausta_sijainti2):
+def draw_game(draw_window, character, position, background, background_position, health, background2, background_position2):
 	
-    piirtoikkuna.fill((0, 0, 0))
+    draw_window.fill((0, 0, 0))
     
-    piirtoikkuna.blit(tausta, (tausta_sijainti,0))
-    piirtoikkuna.blit(tausta, (tausta_sijainti - tausta.get_width(),0))
+    draw_window.blit(background, (background_position,0))
+    draw_window.blit(background, (background_position - background.get_width(),0))
     
-    fontti = pygame.font.Font(None, 24)
-    teksti = fontti.render("Health: " + str(elama), True, (255,0,0))
-    naytto.blit(teksti, (0,0))
+    font = pygame.font.Font(None, 24)
+    text = font.render("Health: " + str(health), True, (255,0,0))
+    display.blit(text, (0,0))
 	     
     
-    piirtoikkuna.blit(tausta2, (tausta_sijainti2,200))
-    piirtoikkuna.blit(tausta2, (tausta_sijainti2 - tausta2.get_width(),200))
+    draw_window.blit(background2, (background_position2,200))
+    draw_window.blit(background2, (background_position2 - background2.get_width(),200))
     # Let's move the boxes. 
-    for laatikko_x in laatikko:
-        piirtoikkuna.blit(laatikko1, (laatikko_x,350))
+    for box_x in box:
+        draw_window.blit(box1, (box_x,350))
         
     # Update Fps to the titlebar.
     pygame.display.set_caption("FPS: " + str(random.randint(60, 80)))
         
     
-    piirtoikkuna.blit(pelihahmo, sijainti)
+    draw_window.blit(character, position)
    
     pygame.display.flip()                         
     
-def control(sijainti):
-    #sijainti[0] = 2;
-    #sijainti[1] = 5;
+def control(position):
+    #position[0] = 2;
+    #position[1] = 5;
     true = True
     
-    napit=pygame.key.get_pressed()
-    if napit[pygame.K_RIGHT]:
+    keys=pygame.key.get_pressed()
+    if keys[pygame.K_RIGHT]:
     
-        sijainti[0]=sijainti[0]+5
-    if napit[pygame.K_LEFT]:
-        sijainti[0]=sijainti[0]-5
+        position[0]=position[0]+5
+    if keys[pygame.K_LEFT]:
+        position[0]=position[0]-5
 
-    if sijainti[1]==155  and napit[pygame.K_SPACE]: 
-        sijainti[2]=1
+    if position[1]==155  and keys[pygame.K_SPACE]: 
+        position[2]=1
 
-    if sijainti[2]==1:
+    if position[2]==1:
         # If we are jumping, go up.
-        sijainti[1]=sijainti[1]-5
+        position[1]=position[1]-5
     else: 
         # If we are not jumping, go down.
-        if sijainti[1] < 155:
-            sijainti[1]=sijainti[1]+5
+        if position[1] < 155:
+            position[1]=position[1]+5
             
     # If we are too high, stop jumping.
-    if sijainti[2]==1 and sijainti[1]<45:
-        sijainti[2]=0
+    if position[2]==1 and position[1]<45:
+        position[2]=0
     
-    if napit[pygame.K_p]:
+    if keys[pygame.K_p]:
         print "P pantu!"
         while true:
             print "pausel'"
-            napit = pygame.key.get_pressed()
-            if napit[pygame.K_a]:
+            keys = pygame.key.get_pressed()
+            if keys[pygame.K_a]:
                 print "exittaa"
                 break
             break 
@@ -123,176 +123,183 @@ def update_fps():
     pygame.display.set_caption("Fps: " + str(random.randint(60, 80)))
     
                         # (x, y)                                         (x,y)
-def point_inside_character(hahmon_sijainti, hahmon_leveys, hahmon_korkeus, piste):
-    if hahmon_sijainti[0] > piste[0]:
+def point_inside_character(character_position, character_width, character_height, point):
+    if character_position[0] > point[0]:
         return False
-    elif hahmon_sijainti[0] + hahmon_leveys < piste[0]:
+    elif character_position[0] + character_width < point[0]:
         return False
-    elif hahmon_sijainti[1] > piste[1]:
+    elif character_position[1] > point[1]:
         return False
-    elif hahmon_sijainti[1] + hahmon_korkeus < piste[1]:
+    elif character_position[1] + character_height < point[1]:
         return False
     else:
 		return True
 
          # (x, y)         kuva    (x, y)          kuva      
-def hit(hahmo1_sijainti, hahmo1, hahmo2_sijainti, hahmo2):
-    if point_inside_character(hahmo1_sijainti, hahmo1.get_width(), hahmo1.get_height(), hahmo2_sijainti):
+def hit(character1_position, character1, character2_position, character2):
+    if point_inside_character(character1_position, character1.get_width(), character1.get_height(), character2_position):
         return True
-    if point_inside_character(hahmo1_sijainti, hahmo1.get_width(), hahmo1.get_height(), (hahmo2_sijainti[0], hahmo2_sijainti[1] + hahmo2.get_height())):
+    if point_inside_character(character1_position, character1.get_width(), character1.get_height(), (character2_position[0], character2_position[1] + character2.get_height())):
 		return True
-    if point_inside_character(hahmo1_sijainti, hahmo1.get_width(), hahmo1.get_height(), (hahmo2_sijainti[0] + hahmo2.get_width(), hahmo2_sijainti[1])):
+    if point_inside_character(character1_position, character1.get_width(), character1.get_height(), (character2_position[0] + character2.get_width(), character2_position[1])):
 		return True
-    if point_inside_character(hahmo1_sijainti, hahmo1.get_width(), hahmo1.get_height(), (hahmo2_sijainti[0] + hahmo2.get_width(), hahmo2_sijainti[1] + hahmo2.get_height())):
+    if point_inside_character(character1_position, character1.get_width(), character1.get_height(), (character2_position[0] + character2.get_width(), character2_position[1] + character2.get_height())):
 		return True
 
     return False
 
 ##  Load images
-naytto = pygame.display.set_mode((640, 400))
+display = pygame.display.set_mode((640, 400))
                 #  x    y  hyppaa
-hahmon_tiedot = [100, 100, 0]
+character_data = [100, 100, 0]
 #x = 100
 #y = 100
 
-nopeus = 10
+speed = 10
 
-tekijat = "Tuomas Numminen & Juhani Numminen"
+credits = "Tuomas Numminen & Juhani Numminen"
 
-xliike = nopeus
-yliike = nopeus
+x_movement = speed
+y_movement = speed
 
-alku_kuva = pygame.image.load("../gfx/start.png")
-alku_kuva2 = pygame.image.load("../gfx/start2.png")
+start_image = pygame.image.load("../gfx/start.png")
+start_image2 = pygame.image.load("../gfx/start2.png")
 
-laatikko1 = pygame.image.load("../gfx/poison.png")
+box1 = pygame.image.load("../gfx/poison.png")
 
-laatikko = [3,300,600]
+box = [3,300,600]
 
-tiedosto = open("../hiscore.txt","r")
-paras_piste = int(tiedosto.readline())
-paras_nimi = tiedosto.readline()
-tiedosto.close()
-
+try:
+    file = open("../hiscore.txt","r")
+    best_point = int(file.readline())
+    best_name = file.readline()
+    file.close()
+except (IOError, ValueError):
+    fileError = open("../hiscore.txt","w")
+    fileError.write("0")
+    fileError.close()
+    
+    best_point = 0
+    best_name = ""
+    
 menu = []
-menu.append((alku_kuva, alku_kuva2))
+menu.append((start_image, start_image2))
 
-tausta2 = pygame.image.load("../gfx/ground.png")
-tausta = pygame.image.load("../gfx/clouds.png")
-tausta_sijainti = 0
-tausta_sijainti2 = 0
+background2 = pygame.image.load("../gfx/ground.png")
+background = pygame.image.load("../gfx/clouds.png")
+background_position = 0
+background_position2 = 0
 
-ukko = pygame.image.load("../gfx/guy.png")
+character = pygame.image.load("../gfx/guy.png")
 
-hiiri = [0,0]
+mouse = [0,0]
 
-kello = pygame.time.Clock()
+clock = pygame.time.Clock()
 
-nimi = raw_input ("Your nickname: ")
+name = raw_input ("Your nickname: ")
 
 ## Game start: menu
-naytetaanMenu = True
-while naytetaanMenu:
-    nappiaPainettu = False
-    for tapahtuma in pygame.event.get():
-        if tapahtuma.type == pygame.QUIT:
+show_menu = True
+while show_menu:
+    key_pressed = False
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
             exit()
-        if tapahtuma.type == pygame.MOUSEMOTION:
-			hiiri=tapahtuma.pos
-        if tapahtuma.type == pygame.MOUSEBUTTONDOWN:
-            nappiaPainettu = True 
+        if event.type == pygame.MOUSEMOTION:
+			mouse=event.pos
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            key_pressed = True 
     
     update_fps()
     
-    aktiivinenKuva = draw_menu(naytto, menu, hiiri)
+    active_image = draw_menu(display, menu, mouse)
     
-    if nappiaPainettu and aktiivinenKuva > -1:
-		naytetaanMenu = False
+    if key_pressed and active_image > -1:
+		show_menu = False
 		break
 
-koskettaako = 0
+touches = 0
 
-elama = 10
-aloitus_aika = time.clock()
+health = 10
+start_time = time.clock()
 
 # Game while
 while True:
-    for tapahtuma in pygame.event.get():
-        if tapahtuma.type == pygame.QUIT:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
             exit()
 
-    control(hahmon_tiedot)
-    #print hahmon_tiedot
+    control(character_data)
+    #print character_data
     
     # Gamelogic
-    tausta_sijainti = tausta_sijainti - 1
-    tausta_sijainti2 = tausta_sijainti2 - 5
-    #print "taustan sijainti", tausta_sijainti, "ja taustan leveys", tausta.get_width()
-    tausta_sijainti = tausta_sijainti % 640
-    tausta_sijainti2 = tausta_sijainti2 % 640
+    background_position = background_position - 1
+    background_position2 = background_position2 - 5
+    background_position = background_position % 640
+    background_position2 = background_position2 % 640
     
-    for indeksi in range(len(laatikko)):
-		laatikko[indeksi] = laatikko[indeksi] - 7 
-		if laatikko[indeksi]<-200:
-			laatikko[indeksi] = 900
+    for index in range(len(box)):
+		box[index] = box[index] - 7 
+		if box[index]<-200:
+			box[index] = 900
 	
 	# touch
-    osui = 0
-    for indeksi in range(len(laatikko)):
-        if hit(hahmon_tiedot, ukko, (laatikko[indeksi], 350), laatikko1):
-            osui = 1
+    does_hit = 0
+    for index in range(len(box)):
+        if hit(character_data, character, (box[index], 350), box1):
+            does_hit = 1
 		 
-    if osui == 1 and koskettaako == 0:
-        koskettaako = 1
-        elama=elama-1
+    if does_hit == 1 and touches == 0:
+        touches = 1
+        health=health-1
     
-    if osui == 0:
-        koskettaako = 0
+    if does_hit == 0:
+        touches = 0
                #              x                 y
-    sijainti = (hahmon_tiedot[0], hahmon_tiedot[1])
-    draw_game(naytto, ukko, sijainti, tausta, tausta_sijainti, elama ,tausta2, tausta_sijainti2)
+    position = (character_data[0], character_data[1])
+    draw_game(display, character, position, background, background_position, health, background2, background_position2)
 
-    kello.tick(40)
-    if elama == 0:
+    clock.tick(40)
+    if health == 0:
 		break
     
-    if tapahtuma.type == pygame.KEYDOWN:
-		if tapahtuma.key == pygame.K_ESCAPE:
+    if event.type == pygame.KEYDOWN:
+		if event.key == pygame.K_ESCAPE:
 			break 
     
         
 
-mennyt_aika = int(round(time.clock() - aloitus_aika))
-fontti = pygame.font.Font(None, 24) 
+elapsed_time = int(round(time.clock() - start_time))
+font = pygame.font.Font(None, 24) 
 
-if mennyt_aika > paras_piste:
-    tiedosto2 = open("../hiscore.txt", "w")
-    tiedosto2.write(str(mennyt_aika) + "\n" )
-    tiedosto2.write (nimi)
-    tiedosto2.close()
+if elapsed_time > best_point:
+    file2 = open("../hiscore.txt", "w")
+    file2.write(str(elapsed_time) + "\n" )
+    file2.write (name)
+    file2.close()
     
-    teksti = fontti.render("Time: " + str(mennyt_aika) + " s      This game is made by " + tekijat, True, (255,0,0))
-    teksti2 = fontti.render("##### NEW RECORD #####",True,(50,255,0))
-    teksti3 = fontti.render("Previous record: "  + str(paras_piste) + "s", True, (255,0,0))
-    teksti4 = fontti.render("Made by: " + paras_nimi, True, (255,0,0))
+    text = font.render("Time: " + str(elapsed_time) + " s      This game is made by " + credits, True, (255,0,0))
+    text2 = font.render("##### NEW RECORD #####",True,(50,255,0))
+    text3 = font.render("Previous record: "  + str(best_point) + "s", True, (255,0,0))
+    text4 = font.render("Made by: " + best_name, True, (255,0,0))
 else:    
-    teksti = fontti.render("Time: " + str(mennyt_aika) + " s      This game is made by " + tekijat, True, (255,0,0))
-    teksti2 = fontti.render("##### NO NEW RECORD #####" + "s", True, (255,0,0))
-    teksti3 = fontti.render("Current record: " + str(paras_piste) + "s", True, (255,0,0))
-    teksti4 = fontti.render("Made by: " + paras_nimi, True, (255,0,0))
+    text = font.render("Time: " + str(elapsed_time) + " s      This game is made by " + credits, True, (255,0,0))
+    text2 = font.render("##### NO NEW RECORD #####" + "s", True, (255,0,0))
+    text3 = font.render("Current record: " + str(best_point) + "s", True, (255,0,0))
+    text4 = font.render("Made by: " + best_name, True, (255,0,0))
 #END While
 while True:
-    for tapahtuma in pygame.event.get():
-        if tapahtuma.type == pygame.QUIT:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
             exit()
     update_fps()
     
-    naytto.fill((0, 0, 0))
+    display.fill((0, 0, 0))
 
-    naytto.blit(teksti, (0,0))
-    naytto.blit(teksti2, (0,50))
-    naytto.blit(teksti3, (0,100))
-    naytto.blit(teksti4, (0,125))
+    display.blit(text, (0,0))
+    display.blit(text2, (0,50))
+    display.blit(text3, (0,100))
+    display.blit(text4, (0,125))
     
     pygame.display.flip()   
             
