@@ -41,11 +41,11 @@ def draw_menu(window, image_list, mouse_pos):
     active_image = -1
     image_index = 0
 
-    position = [261,50]
+    position = [261, 50]
     for image_pair in image_list:
         window.blit(image_pair[0], position)
         if mouse_pos[0] > 261 and mouse_pos[0] < 320:
-            if mouse_pos[1] > 50 and mouse_pos[1]<102:
+            if mouse_pos[1] > 50 and mouse_pos[1] < 102:
                 window.blit(image_pair[1], position)
                 active_image = image_index
 
@@ -58,19 +58,19 @@ def draw_game(draw_window, character, position, background, background_position,
 
     draw_window.fill((0, 0, 0))
 
-    draw_window.blit(background, (background_position,0))
-    draw_window.blit(background, (background_position - background.get_width(),0))
+    draw_window.blit(background, (background_position, 0))
+    draw_window.blit(background, (background_position - background.get_width(), 0))
 
     font = pygame.font.Font(None, 24)
-    text = font.render("Health: " + str(health), True, (255,0,0))
-    display.blit(text, (0,0))
+    text = font.render("Health: " + str(health), True, (255, 0, 0))
+    display.blit(text, (0, 0))
 
 
-    draw_window.blit(background2, (background_position2,200))
-    draw_window.blit(background2, (background_position2 - background2.get_width(),200))
+    draw_window.blit(background2, (background_position2, 200))
+    draw_window.blit(background2, (background_position2 - background2.get_width(), 200))
     # Let's move the boxes.
     for box_x in box:
-        draw_window.blit(box1, (box_x,350))
+        draw_window.blit(box1, (box_x, 350))
 
     # Update Fps to the titlebar.
     pygame.display.set_caption("FPS: " + str(random.randint(60, 80)))
@@ -85,27 +85,27 @@ def control(position):
     #position[1] = 5;
     true = True
 
-    keys=pygame.key.get_pressed()
+    keys = pygame.key.get_pressed()
     if keys[pygame.K_RIGHT]:
 
-        position[0]=position[0]+5
+        position[0] = position[0] + 5
     if keys[pygame.K_LEFT]:
-        position[0]=position[0]-5
+        position[0] = position[0] - 5
 
-    if position[1]==155  and keys[pygame.K_SPACE]:
-        position[2]=1
+    if position[1] == 155  and keys[pygame.K_SPACE]:
+        position[2] = 1
 
-    if position[2]==1:
+    if position[2] == 1:
         # If we are jumping, go up.
-        position[1]=position[1]-5
+        position[1] = position[1] - 5
     else:
         # If we are not jumping, go down.
         if position[1] < 155:
-            position[1]=position[1]+5
+            position[1] = position[1] + 5
 
     # If we are too high, stop jumping.
-    if position[2]==1 and position[1]<45:
-        position[2]=0
+    if position[2] == 1 and position[1] < 45:
+        position[2] = 0
 
     if keys[pygame.K_p]:
         print "P pantu!"
@@ -139,11 +139,14 @@ def point_inside_character(character_position, character_width, character_height
 def hit(character1_position, character1, character2_position, character2):
     if point_inside_character(character1_position, character1.get_width(), character1.get_height(), character2_position):
         return True
-    if point_inside_character(character1_position, character1.get_width(), character1.get_height(), (character2_position[0], character2_position[1] + character2.get_height())):
+    if point_inside_character(character1_position, character1.get_width(),
+            character1.get_height(), (character2_position[0], character2_position[1] + character2.get_height())):
         return True
-    if point_inside_character(character1_position, character1.get_width(), character1.get_height(), (character2_position[0] + character2.get_width(), character2_position[1])):
+    if point_inside_character(character1_position, character1.get_width(),
+            character1.get_height(), (character2_position[0] + character2.get_width(), character2_position[1])):
         return True
-    if point_inside_character(character1_position, character1.get_width(), character1.get_height(), (character2_position[0] + character2.get_width(), character2_position[1] + character2.get_height())):
+    if point_inside_character(character1_position, character1.get_width(),
+            character1.get_height(), (character2_position[0] + character2.get_width(), character2_position[1] + character2.get_height())):
         return True
 
     return False
@@ -167,7 +170,7 @@ start_image2 = pygame.image.load("../gfx/start2.png")
 
 box1 = pygame.image.load("../gfx/poison.png")
 
-box = [3,300,600]
+box = [3, 300, 600]
 
 try:
     file = open("../hiscore.txt","r")
@@ -240,7 +243,7 @@ while True:
 
     for index in range(len(box)):
         box[index] = box[index] - 7
-        if box[index]<-200:
+        if box[index] < -200:
             box[index] = 900
 
     # touch
@@ -251,15 +254,17 @@ while True:
 
     if does_hit == 1 and touches == 0:
         touches = 1
-        health=health-1
+        health = health - 1
 
     if does_hit == 0:
         touches = 0
                #              x                 y
     position = (character_data[0], character_data[1])
-    draw_game(display, character, position, background, background_position, health, background2, background_position2)
+    draw_game(display, character, position, background,
+            background_position, health, background2, background_position2)
 
     clock.tick(40)
+    
     if health == 0:
         break
 
@@ -278,15 +283,15 @@ if elapsed_time > best_point:
     file2.write (name)
     file2.close()
 
-    text = font.render("Time: " + str(elapsed_time) + " s      This game is made by " + credits, True, (255,0,0))
-    text2 = font.render("##### NEW RECORD #####",True,(50,255,0))
-    text3 = font.render("Previous record: "  + str(best_point) + "s", True, (255,0,0))
-    text4 = font.render("Made by: " + best_name, True, (255,0,0))
+    text = font.render("Time: " + str(elapsed_time) + " s      This game is made by " + credits, True, (255, 0, 0))
+    text2 = font.render("##### NEW RECORD #####",True,(50, 255, 0))
+    text3 = font.render("Previous record: "  + str(best_point) + "s", True, (255, 0, 0))
+    text4 = font.render("Made by: " + best_name, True, (255, 0, 0))
 else:
-    text = font.render("Time: " + str(elapsed_time) + " s      This game is made by " + credits, True, (255,0,0))
-    text2 = font.render("##### NO NEW RECORD #####" + "s", True, (255,0,0))
-    text3 = font.render("Current record: " + str(best_point) + "s", True, (255,0,0))
-    text4 = font.render("Made by: " + best_name, True, (255,0,0))
+    text = font.render("Time: " + str(elapsed_time) + " s      This game is made by " + credits, True, (255, 0, 0))
+    text2 = font.render("##### NO NEW RECORD #####" + "s", True, (255, 0, 0))
+    text3 = font.render("Current record: " + str(best_point) + "s", True, (255, 0, 0))
+    text4 = font.render("Made by: " + best_name, True, (255, 0, 0))
 #END While
 while True:
     for event in pygame.event.get():
@@ -296,10 +301,10 @@ while True:
 
     display.fill((0, 0, 0))
 
-    display.blit(text, (0,0))
-    display.blit(text2, (0,50))
-    display.blit(text3, (0,100))
-    display.blit(text4, (0,125))
+    display.blit(text, (0, 0))
+    display.blit(text2, (0, 50))
+    display.blit(text3, (0, 100))
+    display.blit(text4, (0, 125))
 
     pygame.display.flip()
 
