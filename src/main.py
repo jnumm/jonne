@@ -35,6 +35,8 @@ pygame.font.init()
 # The functions of the game.
 
 def draw_menu(window, image_list, mouse_pos):
+    """Draw a menu
+    """
                # r    g    b
     window.fill((250, 250, 250))
 
@@ -81,6 +83,11 @@ def draw_game(draw_window, character, position, background, background_position,
     pygame.display.flip()
 
 def control(position):
+    """Game control handling function
+    
+    This is called from a loop.
+    """
+    
     #position[0] = 2;
     #position[1] = 5;
     true = True
