@@ -1,7 +1,13 @@
 Jonne
 ======
 Jonne is a jumping game developed in Python, using PyGame.
+
+License
+========
 Jonne is open source; it is published under the BSD 2-clause license.
+
+An additional library, PGU, also comes with the program. PGU is licensed
+under LGPL, version 2.1 or later; see src/pgu/LICENSE.txt.
 
 History
 ========

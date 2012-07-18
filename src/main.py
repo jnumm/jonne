@@ -29,10 +29,39 @@ import pygame
 import random
 import time
 
+# The following line is not needed if pgu is installed.
+import sys; sys.path.insert(0, "..")
+
+from pgu import gui
+
 pygame.font.init()
 
 
 # The functions of the game.
+
+def ask_name(screen):
+    # Fill the screen with white.
+    screen.fill((255, 255, 255))
+
+    app = gui.App()
+
+    table = gui.Table()
+
+    table.tr()
+    table.td(gui.Label("Your name "))
+    name_input = gui.Input()
+    table.td(name_input)
+
+    table.tr()
+    ok_button = gui.Button("OK")
+    ok_button.connect(gui.CLICK, app.quit)
+    table.td(ok_button)
+
+    app.init(widget=table, screen=screen)
+    app.connect(gui.QUIT, quit, None)
+    app.run()
+
+    return name_input.value
 
 def draw_menu(window, image_list, mouse_pos):
     """Draw a menu
@@ -206,7 +235,7 @@ mouse = [0,0]
 
 clock = pygame.time.Clock()
 
-name = raw_input ("Your nickname: ")
+name = ask_name(display)
 
 ## Game start: menu
 show_menu = True
