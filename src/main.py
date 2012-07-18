@@ -290,15 +290,18 @@ if elapsed_time > best_point:
     file2.write (name)
     file2.close()
 
-    text = font.render("Time: " + str(elapsed_time) + " s      This game is made by " + credits, True, (255, 0, 0))
+    text = font.render("Time: " + str(elapsed_time), True, (255, 0, 0))
     text2 = font.render("##### NEW RECORD #####",True,(50, 255, 0))
     text3 = font.render("Previous record: "  + str(best_point) + "s", True, (255, 0, 0))
     text4 = font.render("Made by: " + best_name, True, (255, 0, 0))
+    text5 = font.render("This game is made by " + credits, True, (255, 0, 0))
 else:
-    text = font.render("Time: " + str(elapsed_time) + " s      This game is made by " + credits, True, (255, 0, 0))
+    text = font.render("Time: " + str(elapsed_time), True, (255, 0, 0))
     text2 = font.render("##### NO NEW RECORD #####", True, (255, 0, 0))
     text3 = font.render("Current record: " + str(best_point) + "s", True, (255, 0, 0))
     text4 = font.render("Made by: " + best_name, True, (255, 0, 0))
+    text5 = font.render("This game is made by " + credits, True, (255, 0, 0))
+
 #END While
 while True:
     for event in pygame.event.get():
@@ -308,10 +311,11 @@ while True:
 
     display.fill((0, 0, 0))
 
-    display.blit(text, (0, 0))
-    display.blit(text2, (0, 50))
-    display.blit(text3, (0, 100))
-    display.blit(text4, (0, 125))
+    display.blit(text, (5, 0))
+    display.blit(text2, (5, 50))
+    display.blit(text3, (5, 100))
+    display.blit(text4, (5, 125))
+    display.blit(text5, (5, 170))
 
     pygame.display.flip()
 
