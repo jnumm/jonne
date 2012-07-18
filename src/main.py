@@ -296,7 +296,7 @@ if elapsed_time > best_point:
     text4 = font.render("Made by: " + best_name, True, (255, 0, 0))
 else:
     text = font.render("Time: " + str(elapsed_time) + " s      This game is made by " + credits, True, (255, 0, 0))
-    text2 = font.render("##### NO NEW RECORD #####" + "s", True, (255, 0, 0))
+    text2 = font.render("##### NO NEW RECORD #####", True, (255, 0, 0))
     text3 = font.render("Current record: " + str(best_point) + "s", True, (255, 0, 0))
     text4 = font.render("Made by: " + best_name, True, (255, 0, 0))
 #END While
