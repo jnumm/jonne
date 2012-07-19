@@ -136,8 +136,7 @@ class Game:
             self.display.blit(self.box_image, (box_x, 350))
 
         # Update Fps to the titlebar.
-        pygame.display.set_caption("FPS: " + str(random.randint(60, 80)))
-
+        pygame.display.set_caption("Jonne (FPS: " + self.get_fps() + ")")
 
         self.display.blit(self.character, (self.character_data[0], self.character_data[1]))
 
@@ -184,9 +183,11 @@ class Game:
                 break
             print "ny pitäs jatkuu..."
 
-    def update_fps(self):
-        # Update the FPS to the title bar.
-        pygame.display.set_caption("Fps: " + str(random.randint(60, 80)))
+    def get_fps(self):
+        """Get the FPS, formatted
+        """
+
+        return str(round(self.clock.get_fps(), 1))
 
                             # (x, y)                                         (x,y)
     def point_inside_character(self, character_position, character_width, character_height, point):
@@ -220,6 +221,7 @@ class Game:
     def run(self):
         self.display = pygame.display.set_mode(self.size,
                 pygame.HWSURFACE | pygame.DOUBLEBUF)
+        pygame.display.set_caption("Jonne")
 
         try:
             f = open("../hiscore.txt","r")
@@ -247,8 +249,6 @@ class Game:
                     self.mouse_pos = event.pos
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     key_pressed = True
-
-            self.update_fps()
 
             active_image = self.draw_menu()
 
@@ -303,6 +303,8 @@ class Game:
                 if event.key == pygame.K_ESCAPE:
                     break
 
+        pygame.display.set_caption("Jonne")
+
         self.elapsed_time = int(round(time.clock() - start_time))
 
         if self.elapsed_time > self.best_point:
@@ -328,7 +330,8 @@ class Game:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     quit()
-            self.update_fps()
+
+            pygame.display.set_caption("Jonne (FPS: " + self.get_fps() + ")")
 
             self.display.fill((0, 0, 0))
 
