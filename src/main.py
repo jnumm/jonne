@@ -25,6 +25,7 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+import logging
 import pygame
 import random
 import time
@@ -43,6 +44,8 @@ class Game:
     def __init__(self):
         """Initialization of the game
         """
+
+        logging.info("Initializing the game")
         pygame.init()
 
         self.display = None
@@ -71,6 +74,8 @@ class Game:
         self.clock = pygame.time.Clock()
 
         self.font_normal = pygame.font.Font(None, 24)
+
+        logging.info("Game initialized")
 
     def ask_name(self):
         # Fill the screen with white.
@@ -228,7 +233,8 @@ class Game:
             self.best_point = int(f.readline())
             self.best_name = f.readline()
             f.close()
-        except (IOError, ValueError):
+        except (IOError, ValueError) as error:
+            logging.info("Error while reading hiscore file: %s", error)
             f = open("../hiscore.txt","w")
             f.write("0")
             f.close()
@@ -237,6 +243,7 @@ class Game:
             self.best_name = ""
 
         name = self.ask_name()
+        logging.debug("Player's name is \"%s\"", name)
 
         ## Game start: menu
         show_menu = True
@@ -259,6 +266,8 @@ class Game:
         touches = 0
 
         start_time = time.clock()
+
+        logging.debug("Game loop starting")
 
         # Game while
         while True:
@@ -288,6 +297,7 @@ class Game:
             if does_hit == 1 and touches == 0:
                 touches = 1
                 self.health -= 1
+                logging.debug("The player hit a box; health is now %s", self.health)
 
             if does_hit == 0:
                 touches = 0
@@ -301,13 +311,19 @@ class Game:
 
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
+                    logging.debug("The player pressed ESC")
                     break
 
         pygame.display.set_caption("Jonne")
 
         self.elapsed_time = int(round(time.clock() - start_time))
 
+        logging.info("Game over")
+
         if self.elapsed_time > self.best_point:
+            logging.info("New record")
+
+            logging.info("Writing record to hiscore file")
             file2 = open("../hiscore.txt", "w")
             file2.write(str(self.elapsed_time) + "\n" )
             file2.write(self.name)
@@ -319,6 +335,7 @@ class Game:
             text4 = self.font_normal.render("Made by: " + self.best_name, True, (255, 0, 0))
             text5 = self.font_normal.render("This game is made by " + self.credits, True, (255, 0, 0))
         else:
+            logging.info("No new record")
             text = self.font_normal.render("Time: " + str(self.elapsed_time), True, (255, 0, 0))
             text2 = self.font_normal.render("##### NO NEW RECORD #####", True, (255, 0, 0))
             text3 = self.font_normal.render("Current record: " + str(self.best_point) + "s", True, (255, 0, 0))
@@ -344,5 +361,15 @@ class Game:
             pygame.display.flip()
 
 if __name__ == "__main__":
+    # Logging level handling, add "info" or "debug" to command line to get
+    # verbose log messages.
+    try:
+        numeric_level = getattr(logging, sys.argv[1].upper())
+        if not isinstance(numeric_level, int):
+            raise ValueError('Invalid log level: %s' % loglevel)
+        logging.basicConfig(level=numeric_level, format="%(levelname)s: %(message)s")
+    except:
+        logging.basicConfig(format='%(levelname)s: %(message)s')
+
     game = Game()
     game.run()
