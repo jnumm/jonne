@@ -243,7 +243,7 @@ class Game:
             self.best_name = ""
 
         self.name = self.ask_name()
-        logging.debug("Player's name is \"%s\"", name)
+        logging.debug("Player's name is \"%s\"", self.name)
 
         ## Game start: menu
         show_menu = True
