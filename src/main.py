@@ -242,7 +242,7 @@ class Game:
             self.best_point = 0
             self.best_name = ""
 
-        name = self.ask_name()
+        self.name = self.ask_name()
         logging.debug("Player's name is \"%s\"", name)
 
         ## Game start: menu
